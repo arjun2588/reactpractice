@@ -2,6 +2,8 @@ import React,{useState} from 'react';
 
 export default function ProductList({initialData,data,handleFilterProductChange,handlePage,isSubmit,handleProductChange,isUpdateSubmit}) {
   const [filterText,setFilterText] = useState('')
+  const [isLoading,setIsLoading] = useState(true);
+  const [iserror,setIserror] = useState(false);
   const tableStyle = {
     border: '1px solid #000',
     width: '100%',
@@ -48,8 +50,11 @@ export default function ProductList({initialData,data,handleFilterProductChange,
       <p>This is the product list page.</p>
       { isSubmit && <label style={{color:'green'}}>Product add successfully.</label>}
       { isUpdateSubmit && <label style={{color:'green'}}>Product Updated successfully.</label>}
-      <input type='text' style={{marginBottomm:'10px'}} value={filterText} onChange={(e) => {setFilterText(e.target.value);filterProduct(e.target.value);}} placeholder='type for filter..' />
-      <button onClick={()=>handlePage('add')}>Add Product</button>
+      <p><input type='text' style={{marginBottomm:'10px'}} value={filterText} onChange={(e) => {setFilterText(e.target.value);filterProduct(e.target.value);}} placeholder='type for filter..' />
+      <button onClick={()=>handlePage('add')}>Add Product</button></p>
+      <br />
+      
+      {data.length > 0 &&
       <table style={tableStyle}>
         <thead>
           <tr>
@@ -60,7 +65,7 @@ export default function ProductList({initialData,data,handleFilterProductChange,
           </tr>
         </thead>
         <tbody>
-        {data.length > 0 &&
+        {
           data.map((product)=>{
             return(
               <tr key={product.id}>
@@ -73,9 +78,9 @@ export default function ProductList({initialData,data,handleFilterProductChange,
             )
           })
         }
-        {data.length === 0 && <p>No Product Found</p>}
         </tbody>
-      </table>
+      </table>}
+      {data.length === 0 && <p>No Product Found</p>}
     </>
   );
 }
